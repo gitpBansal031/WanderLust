@@ -1,0 +1,1 @@
+This folder is to add self made data to the database
