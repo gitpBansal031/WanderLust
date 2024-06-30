@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Listing-TripEasy</title>
+</head>
+<body>
+    <h1>Add Listings</h1>
+    <form method="post" action="/listings">
+        <input type="text" placeholder="Title" name="Listing[title]">
+        <textarea name="Listing[description]"></textarea>
+        <input type="text" placeholder="Image Url" name="Listing[image]">
+        <input type="number" placeholder="Price" name="Listing[price]">
+        <input type="text" placeholder="Location" name="Listing[location]">
+        <input type="text" placeholder="Country" name="Listing[country]">
+        <button>Submit</button>
+    </form>
+</body>
+</html>

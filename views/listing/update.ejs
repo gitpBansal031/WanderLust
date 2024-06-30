@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Listing-TripEasy</title>
+</head>
+<body>
+    <h1>Update Listings</h1>
+    <form method="POST" action="/listing/<%=listing.id%>?_method=PUT">
+        <input type="text" value="<%=listing.title%>" name="Listing[title]">
+        <textarea name="Listing[description]"><%=listing.description%></textarea>
+        <input type="text" value="<%=listing.image%>"" name="Listing[image]">
+        <input type="number" value="<%=listing.price%>" name="Listing[price]">
+        <input type="text" value="<%=listing.location%>" name="Listing[location]">
+        <input type="text" value="<%=listing.country%>" name="Listing[country]">
+        <button>Submit</button>
+    </form>
+</body>
+</html>

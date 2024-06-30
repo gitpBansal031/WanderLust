@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All listings-TripEasy</title>
+    <link rel="stylesheet" href="../../public/listing/style.css">
+</head>
+<body>
+    <form action="/listing/new">
+        <button>Add listing</button>
+    </form>
+    <ul class="list">
+        <% for(listing of allListings){ %>
+            <hr>
+            <li class="item"><%=listing.title %> </li>
+            <li class="item"><%=listing.description %> </li>
+            <li class="item">&#8377;<%=listing.price.toLocaleString("en-in") %> </li>
+            <li class="item"><%=listing.location %> </li>
+            <li class="item"><%=listing.country %> </li>
+            <a href="/listing/show/<%=listing.id%>">Show</a>
+            <br>
+            <a href="/listing/delete/<%=listing.id%>">Delete</a>
+        <%}%>
+    </ul>
+</body>
+</html>

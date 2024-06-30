@@ -1,11 +1,13 @@
 const mongoose=require("mongoose");
-const data=require("./listingsData");
+const data=require("./listingData");
 const model=require("../models/listing");
 
 main()
 .then(async (ad)=>{
     await model.deleteMany({});
-    // await model.insertMany(data.data);
+    await model.insertMany(data).then(()=>{
+      console.log("Data inserted");
+    });
 })
 .catch(err => console.log(err));
 

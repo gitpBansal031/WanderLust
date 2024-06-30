@@ -16,6 +16,13 @@ const listingSchema=new mongoose.Schema({
     price:{
         type:Number
     },
+    location:{
+        type:String
+    },
+    country:{
+        type:String
+    },
+
 });
-const listing =mongoose.model("Listing",listingSchema);
-module.exports=listing;
+const Listing =mongoose.model("Listing",listingSchema);
+module.exports=Listing;
