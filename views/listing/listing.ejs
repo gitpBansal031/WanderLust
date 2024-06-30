@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All listings-TripEasy</title>
-    <link rel="stylesheet" href="../../public/listing/style.css">
-</head>
+<% layout("./layouts/boilerplate") %>
 <body>
-    <form action="/listing/new">
-        <button>Add listing</button>
-    </form>
     <ul class="list">
         <% for(listing of allListings){ %>
             <hr>
@@ -23,5 +13,4 @@
             <a href="/listing/delete/<%=listing.id%>">Delete</a>
         <%}%>
     </ul>
-</body>
-</html>
+</body> 

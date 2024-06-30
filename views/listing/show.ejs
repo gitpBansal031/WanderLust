@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripEasy</title>
-    <link rel="stylesheet" href="../../public/listing/style.css">
-</head>
+<% layout("./layouts/boilerplate") %>
 <body>
     <ul class="list">
         <li class="item"><%=listing.title %> </li>
@@ -16,4 +9,3 @@
         <a href="/listing/update/<%=listing.id%>">Update</a>
     </ul>
 </body>
-</html>
