@@ -61,6 +61,9 @@ app.get("/listing/show/:id",async (req,res)=>{
     const listing=await Listing.findById(id);
     res.render("listing/show.ejs",{listing});
 });
+app.get("/",(req,res)=>{
+    res.redirect("/listings");
+})
 
 app.get("*",(req,res)=>{
     res.render("noPage");

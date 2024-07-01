@@ -83,3 +83,20 @@ body{
     background-color: #fe424d !important;
     border: none !important;
 }
+
+/* Show */
+.show-img{
+    height: 30vh;
+}
+.btns{
+    margin-left: 550px;
+    margin-bottom: 100px;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.show-card{
+    padding-left: 0px;
+    padding-right: 0px;
+}
