@@ -100,3 +100,16 @@ body{
     padding-left: 0px;
     padding-right: 0px;
 }
+
+/* Home Page */
+/* #main-page-body::before{
+    content: " ";
+    background: url("https://static.vecteezy.com/system/resources/previews/023/635/979/non_2x/tropical-island-background-illustration-ai-generative-free-photo.jpg");
+    background-size: cover;
+    opacity: 0.75;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+} */
