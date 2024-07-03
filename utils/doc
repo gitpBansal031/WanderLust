@@ -1,0 +1,19 @@
+Error handing basically consists of two parts:-
+1-Catching error (from client side or server side)
+2-Throwing error (and showing respective message to the end user)
+
+Different classes/function use
+1-Try-Catch the error and throw the error to display the message
+2-Using wrapAsync function to avoid use of try catch error
+3-Using expressError class to display custom error
+
+Process of error handing
+1-wrap every async funtion or any other function with wrapAsync
+2-use expressError class to display custom error
+3-make a error middleware at the end of app.js
+```
+    app.use((err, req, res, next) => {
+        let { statusCode=401, message="Amit bhadva"} = err;
+        res.status(statusCode).send(message);
+    });
+```
