@@ -19,9 +19,9 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 
-//<--CRUD Operations and Routes-->
+//<--Routes and CRUD Operations-->
 
-//All listings (Read)
+//Read (All listings)
 app.get("/listings",async (req,res)=>{
     const allListings= await Listing.find();
     res.render("listing/listing.ejs",{allListings});
