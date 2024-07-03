@@ -17,3 +17,13 @@ Process of error handing
         res.status(statusCode).send(message);
     });
 ```
+---------------------------------------------------------------------------------------------------------
+
+*Throw new custom error using expressError
+```
+    new expressError(404,"Error message you want to display");
+```
+
+
+## Note: you can't throw custom error if using wrapAsync
+
