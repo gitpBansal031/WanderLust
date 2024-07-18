@@ -16,6 +16,7 @@ router.post("/", wrapAsync(async (req, res) => {
     currListing.reviews.push(newReview); //add review to that particular listing
     await newReview.save(); //Save a new review in the 'reviews' collection
     await currListing.save(); //Save the listing in 'listings' collection with new review (it wont make a new listing)
+    req.flash("success","New Review Created!");
     res.redirect(`/listing/show/${id}`);
 }))
 
@@ -24,6 +25,7 @@ router.delete("/:reviewId",wrapAsync(async (req,res)=>{
     const {id,reviewId}=req.params;
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
     await Review.findByIdAndDelete({_id:reviewId});
+    req.flash("success","Review Deleted!");
     res.redirect(`/listing/show/${id}`);
 }))
 

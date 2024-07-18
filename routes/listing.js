@@ -32,6 +32,7 @@ router.get("/new", (req, res, next) => {
 router.get("/update/:id", wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
+    req.flash("success","Listing Updated!");
     res.render("listing/update.ejs", { listing });
 }));
 
@@ -39,6 +40,7 @@ router.get("/update/:id", wrapAsync(async (req, res, next) => {
 router.get("/delete/:id", wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);  //it will call the middleware in ./models/listing.js file to delete all reviews associated with it
+    req.flash("success","Listing Deleted!");
     res.redirect("/listing");
 }));
 
@@ -53,6 +55,7 @@ router.post("/", wrapAsync(async (req, res, next) => {
         }
     }
     const newListing = new Listing(req.body.Listing);
+    req.flash("success","New Listing Created!");
     await newListing.save(); //to save a single listing.(that insertMany method can also be used)
     res.redirect("/listing");
 }

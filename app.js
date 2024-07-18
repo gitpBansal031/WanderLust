@@ -5,15 +5,14 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const { reviewSchema } = require("./joiSchema");
 const cookieParser=require("cookie-parser");
-
+const session=require("express-session");
+const flash=require("connect-flash");
 //models
 const Listing = require("./models/listing");
 const Review = require("./models/review");
-
-//exporess-routers
+//express-routers
 const listingRouter = require("./routes/listing");
 const reviewRouter = require("./routes/review");
-
 //Miscellaneous
 const wrapAsync = require("./utils/wrapAsync");
 const expressError = require("./utils/expressError");
@@ -48,12 +47,32 @@ const validateReview = (req, res, next) => {
     }
 }
 
+//Sessions part
+const sessionOptions={
+    secret:"supersecretcode",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now()+7*24*60*60*1000,
+        maxAge:7*24*60*60*1000,
+        httpOnly:true
+    }
+}
+app.use(session(sessionOptions));
+app.use(flash());
+
 //<------------Routes----------------->
 app.get("/", (req, res) => {
     // res.cookie("a","bd");
     // console.dir(req.cookies);
     res.redirect("/listing");
 });
+
+//flash session middleware
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    next();
+})
 
 app.use("/listing", listingRouter);
 app.use("/listing/:id/review", reviewRouter);
