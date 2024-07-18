@@ -7,12 +7,16 @@ const { reviewSchema } = require("./joiSchema");
 const cookieParser=require("cookie-parser");
 const session=require("express-session");
 const flash=require("connect-flash");
+const passport=require("passport");
+const passportLocal=require("passport-local");
 //models
 const Listing = require("./models/listing");
 const Review = require("./models/review");
+const User=require("./models/user");
 //express-routers
 const listingRouter = require("./routes/listing");
 const reviewRouter = require("./routes/review");
+const userRouter=require("./routes/user");
 //Miscellaneous
 const wrapAsync = require("./utils/wrapAsync");
 const expressError = require("./utils/expressError");
@@ -61,6 +65,12 @@ const sessionOptions={
 app.use(session(sessionOptions));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 //<------------Routes----------------->
 app.get("/", (req, res) => {
     // res.cookie("a","bd");
@@ -71,14 +81,26 @@ app.get("/", (req, res) => {
 //flash session middleware
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
     next();
+})
+
+app.get("/demoUser",async (req,res)=>{
+    let fakeUser=new User({
+        email:"a@g.c",
+        username:"aa"
+    })
+    const newUser=await User.register(fakeUser,"qwerty");
+    res.send(newUser);
 })
 
 app.use("/listing", listingRouter);
 app.use("/listing/:id/review", reviewRouter);
+app.use("/user", userRouter);
 
 app.get("/loadSampleData",(req,res)=>{
     require("./init/init");  //To reload the sample data
+    req.flash("success","Sample Data Loaded Successfully!");
     res.redirect("/");
 })
 
