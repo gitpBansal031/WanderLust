@@ -3,6 +3,7 @@ const Listing = require("../models/listing");
 const Review = require("../models/review");
 const listingData = require("./listingData");
 const reviewData = require("./reviewData");
+const nameData = require("./nameData");
 
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/tripEasy');
@@ -28,7 +29,9 @@ main()
     let reviewIdx = 0; //review index counter
     for (let listing of allListing) {
       for (let i = 0; i < reviewCount[listingIdx]; i++) {
-        listing.reviews.push(allReview[reviewIdx]._id);
+        const currReview = allReview[reviewIdx];
+        await Review.findByIdAndUpdate(currReview._id, { userName: nameData[reviewIdx].name });
+        listing.reviews.push(currReview._id);
         reviewIdx++;
       }
       await Listing.findByIdAndUpdate(listing._id, listing);

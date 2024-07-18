@@ -1,4 +1,3 @@
-// require("./init/init");  //To reload the sample data
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -58,6 +57,11 @@ app.get("/", (req, res) => {
 
 app.use("/listing", listingRouter);
 app.use("/listing/:id/review", reviewRouter);
+
+app.get("/loadSampleData",(req,res)=>{
+    require("./init/init");  //To reload the sample data
+    res.redirect("/");
+})
 
 app.all("*", (req, res, next) => {
     next(new expressError(401, "Page not found!"));

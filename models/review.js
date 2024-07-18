@@ -1,5 +1,10 @@
 const mongoose=require("mongoose");
 const reviewSchema=new mongoose.Schema({
+    //username can be removed
+    userName:{
+        type:String,
+        default:"Anonymous",
+    },
     comment:{
         type:String,
         default:"apple",

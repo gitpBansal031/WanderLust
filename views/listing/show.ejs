@@ -48,12 +48,13 @@
             <button class="btn btn-outline-dark">Submit</button>
         </form>
         <hr>
+        <!-- All reviews sections -->
         <h4>All reviews</h4>
         <div class="row">
             <%for(review of listing.reviews){%>
                 <div class="card col-5 ms-3 mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">John</h5>
+                        <h5 class="card-title"><%=review.userName%></h5>
                         <div class="card-text">
                             <%=review.comment%>
                         </div>
