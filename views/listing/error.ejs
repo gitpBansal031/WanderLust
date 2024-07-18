@@ -5,9 +5,9 @@
                 <%=message%>
             </p>
             <% if(message=="Page not found!" ||  message=="Something went wrong!" ){%>
-                <p class="alert-heading text-center">The link you followed may be broken, or the page may have been removed. Go back to <a href="/listings">TripEasy</a>.</p>
+                <p class="alert-heading text-center">The link you followed may be broken, or the page may have been removed. Go back to <a href="/listing">TripEasy</a>.</p>
             <%}else if(message.substring(0,33)=="Cast to ObjectId failed for value"){%>
-                <p class="alert-heading text-center">The link you followed may be broken, or the page may have been removed. Go back to <a href="/listings">TripEasy</a>.</p>
+                <p class="alert-heading text-center">The link you followed may be broken, or the page may have been removed. Go back to <a href="/listing">TripEasy</a>.</p>
             <%}%>
         </div>
     </div>

@@ -1,12 +1,11 @@
-//<------------------Requiements--------------------->
-// require("./init/init");  //To reload the listing data
-// require("./init/reviewInit");  //To delete all reviews
+// require("./init/init");  //To reload the sample data
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const { reviewSchema } = require("./joiSchema");
+const cookieParser=require("cookie-parser");
 
 //models
 const Listing = require("./models/listing");
@@ -34,6 +33,8 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(cookieParser());
+
 
 //<----------Functions------------------>
 
@@ -50,6 +51,8 @@ const validateReview = (req, res, next) => {
 
 //<------------Routes----------------->
 app.get("/", (req, res) => {
+    // res.cookie("a","bd");
+    // console.dir(req.cookies);
     res.redirect("/listing");
 });
 
