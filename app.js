@@ -82,17 +82,18 @@ app.get("/", (req, res) => {
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
+    res.locals.currUser=req.user;
     next();
 })
 
-app.get("/demoUser",async (req,res)=>{
-    let fakeUser=new User({
-        email:"a@g.c",
-        username:"aa"
-    })
-    const newUser=await User.register(fakeUser,"qwerty");
-    res.send(newUser);
-})
+// app.get("/demoUser",async (req,res)=>{
+//     let fakeUser=new User({
+//         email:"a@g.c",
+//         username:"aa"
+//     })
+//     const newUser=await User.register(fakeUser,"qwerty");
+//     res.send(newUser);
+// })
 
 app.use("/listing", listingRouter);
 app.use("/listing/:id/review", reviewRouter);

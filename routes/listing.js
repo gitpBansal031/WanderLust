@@ -6,6 +6,7 @@ const expressError = require("../utils/expressError");
 //models
 const Listing = require("../models/listing");
 const Review = require("../models/review");
+const { isLoggedIn } = require("../middleware");
 
 //<---------------Routes------------------->
 
@@ -16,7 +17,7 @@ router.get("/", wrapAsync(async (req, res, next) => {
 }));
 
 //Read (Paricular listing) (Used for show.js)
-router.get("/show/:id", wrapAsync(async (req, res, next) => {
+router.get("/show/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id).populate("reviews");
     if (listing == null) return next(err);
@@ -24,23 +25,22 @@ router.get("/show/:id", wrapAsync(async (req, res, next) => {
 }));
 
 //Create (Used for new.js)
-router.get("/new", (req, res, next) => {
+router.get("/new", isLoggedIn, (req, res, next) => {
     res.render("listing/new.ejs");
 });
 
 //Update (Used for update.js)
-router.get("/update/:id", wrapAsync(async (req, res, next) => {
+router.get("/update/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
-    req.flash("success","Listing Updated!");
     res.render("listing/update.ejs", { listing });
 }));
 
 //Delete
-router.get("/delete/:id", wrapAsync(async (req, res, next) => {
+router.get("/delete/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);  //it will call the middleware in ./models/listing.js file to delete all reviews associated with it
-    req.flash("success","Listing Deleted!");
+    req.flash("success", "Listing Deleted!");
     res.redirect("/listing");
 }));
 
@@ -55,7 +55,7 @@ router.post("/", wrapAsync(async (req, res, next) => {
         }
     }
     const newListing = new Listing(req.body.Listing);
-    req.flash("success","New Listing Created!");
+    req.flash("success", "New Listing Created!");
     await newListing.save(); //to save a single listing.(that insertMany method can also be used)
     res.redirect("/listing");
 }
@@ -75,6 +75,7 @@ router.put("/:id", wrapAsync(async (req, res, next) => {
     //if all fields are filled then this follows up
     const { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.Listing });
+    req.flash("success", "Listing Updated!");
     res.redirect("/listing");
 }));
 
