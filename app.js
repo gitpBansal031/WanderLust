@@ -51,7 +51,7 @@ const validateReview = (req, res, next) => {
     }
 }
 
-//Sessions part
+//Authentication section (Sessions part and passport part)
 const sessionOptions={
     secret:"supersecretcode",
     resave:false,
@@ -62,14 +62,15 @@ const sessionOptions={
         httpOnly:true
     }
 }
+//(mandatory to be placed before routes)
 app.use(session(sessionOptions));
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new passportLocal(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 //<------------Routes----------------->
 app.get("/", (req, res) => {
@@ -78,14 +79,16 @@ app.get("/", (req, res) => {
     res.redirect("/listing");
 });
 
-//flash session middleware
+//session middleware
 app.use((req,res,next)=>{
+    //it is a way to store certain info about the session in variables to access globally in any file/folder
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
-    res.locals.currUser=req.user;
+    res.locals.currUser=req.user; //stores info of current user
     next();
 })
 
+//(example of how to create a new user)
 // app.get("/demoUser",async (req,res)=>{
 //     let fakeUser=new User({
 //         email:"a@g.c",

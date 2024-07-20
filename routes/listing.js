@@ -6,7 +6,7 @@ const expressError = require("../utils/expressError");
 //models
 const Listing = require("../models/listing");
 const Review = require("../models/review");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, isOwner } = require("../middleware");
 
 //<---------------Routes------------------->
 
@@ -17,10 +17,12 @@ router.get("/", wrapAsync(async (req, res, next) => {
 }));
 
 //Read (Paricular listing) (Used for show.js)
-router.get("/show/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/show/:id", wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
-    if (listing == null) return next(err);
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
+    if (!listing){
+        return next(err);
+    }
     res.render("listing/show.ejs", { listing });
 }));
 
@@ -30,14 +32,14 @@ router.get("/new", isLoggedIn, (req, res, next) => {
 });
 
 //Update (Used for update.js)
-router.get("/update/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/update/:id",isOwner,isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listing/update.ejs", { listing });
 }));
 
 //Delete
-router.get("/delete/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/delete/:id", isOwner,isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);  //it will call the middleware in ./models/listing.js file to delete all reviews associated with it
     req.flash("success", "Listing Deleted!");
@@ -46,15 +48,17 @@ router.get("/delete/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
 
 //When submit button is clicked, this route will trigger and a new listing will create (logic part of creating a new listing)
 router.post("/", wrapAsync(async (req, res, next) => {
-    const obj = req.body.Listing;
-    for (let key in obj) {
-        const val = obj[key];
+    let listingObj = req.body.Listing;
+    const ownerId = req.user._id;
+    listingObj = { ...listingObj, owner: ownerId }; //adding owner id to the listing obj
+    for (let key in listingObj) {
+        const val = listingObj[key];
         if (key != 'image' && (val == '' || val == null || val == undefined)) {
             throw new expressError(400, "One or more required field are empty");
             return;
         }
     }
-    const newListing = new Listing(req.body.Listing);
+    const newListing = new Listing(listingObj);
     req.flash("success", "New Listing Created!");
     await newListing.save(); //to save a single listing.(that insertMany method can also be used)
     res.redirect("/listing");

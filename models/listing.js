@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Review = require("./review");
+const User = require("./user");
 const defaultLink = "https://www.bsr.org/images/heroes/bsr-travel-hero..jpg";
 const listingSchema = new mongoose.Schema({
     title: {
@@ -24,6 +25,11 @@ const listingSchema = new mongoose.Schema({
         type: String
     },
     //using the concept of 1xn databaseRelationship
+    //here we are storing the ids of the users related to that listing
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     //here we are storing the ids of the reviews related to that listing
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
