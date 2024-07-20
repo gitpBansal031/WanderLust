@@ -15,13 +15,13 @@ main()
     //delete all the users
     await User.deleteMany({}).then(() => { console.log("All users deleted") });
     //insert admin user
-    let adminUser = new User({ username: "admin", email: "a@t" });
+    let adminUser = new User({ username: "tripEasy", email: "support@tripEasy.in" });
     await User.register(adminUser, "a").then(() => { console.log("Admin user inserted") });
 
     //delete all the existing listings
     await Listing.deleteMany({}).then(() => { console.log("All listing deleted") });
     //reload all the sample listings
-    let admin=await User.find({username:"admin"});
+    let admin=await User.find({username:"tripEasy"});
     listingData = listingData.map((obj)=>({...obj,owner:admin[0]._id}));
     await Listing.insertMany(listingData).then(() => { console.log("All listing inserted") });
 
