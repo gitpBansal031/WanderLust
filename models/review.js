@@ -1,10 +1,5 @@
 const mongoose=require("mongoose");
 const reviewSchema=new mongoose.Schema({
-    //username can be removed
-    userName:{
-        type:String,
-        default:"Anonymous",
-    },
     comment:{
         type:String,
         default:"apple",
@@ -17,6 +12,10 @@ const reviewSchema=new mongoose.Schema({
     createdAt:{
         type:Date,
         default:Date.now()
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }
 })
 const reviewModel=mongoose.model("Review",reviewSchema);

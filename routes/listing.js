@@ -19,8 +19,8 @@ router.get("/", wrapAsync(async (req, res, next) => {
 //Read (Paricular listing) (Used for show.js)
 router.get("/show/:id", wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews").populate("owner");
-    if (!listing){
+    const listing = await Listing.findById(id).populate({ path: "reviews", populate: { path: "owner" } }).populate("owner"); //nested populate
+    if (!listing) {
         return next(err);
     }
     res.render("listing/show.ejs", { listing });
@@ -32,14 +32,14 @@ router.get("/new", isLoggedIn, (req, res, next) => {
 });
 
 //Update (Used for update.js)
-router.get("/update/:id",isOwner,isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/update/:id", isOwner, isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listing/update.ejs", { listing });
 }));
 
 //Delete
-router.get("/delete/:id", isOwner,isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/delete/:id", isOwner, isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);  //it will call the middleware in ./models/listing.js file to delete all reviews associated with it
     req.flash("success", "Listing Deleted!");

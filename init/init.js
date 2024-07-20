@@ -15,7 +15,7 @@ main()
     //delete all the users
     await User.deleteMany({}).then(() => { console.log("All users deleted") });
     //insert admin user
-    const adminUser = new User({ username: "admin", email: "a@t" });
+    let adminUser = new User({ username: "admin", email: "a@t" });
     await User.register(adminUser, "a").then(() => { console.log("Admin user inserted") });
 
     //delete all the existing listings
@@ -33,13 +33,14 @@ main()
     //Adding review to the listing
     const allListing = await Listing.find({});
     const allReview = await Review.find({});
+    adminUser=await User.find({});
     const reviewCount = [6, 3, 5, 3, 3, 4, 3, 4, 2, 2, 4, 4, 4, 4, 2, 5, 3, 4, 4, 4, 3, 4, 2, 4, 2, 4, 4, 2, 2];
     let listingIdx = 0; //listing index counter
     let reviewIdx = 0; //review index counter
     for (let listing of allListing) {
       for (let i = 0; i < reviewCount[listingIdx]; i++) {
         const currReview = allReview[reviewIdx];
-        await Review.findByIdAndUpdate(currReview._id, { userName: nameData[reviewIdx].name });
+        await Review.findByIdAndUpdate(currReview._id, { owner:adminUser[0]._id});
         listing.reviews.push(currReview._id);
         reviewIdx++;
       }
@@ -49,6 +50,5 @@ main()
     console.log("All reviews added to the listings");
   })
   .catch(err => console.log(err));
-
-
+  
 module.exports = main;

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const wrapAsync = require("../utils/wrapAsync");
-const expressError = require("../utils/expressError");
+const {isLoggedIn, isReviewOwner}=require("../middleware");
 //models
 const Listing = require("../models/listing");
 const Review = require("../models/review");
@@ -9,10 +9,11 @@ const Review = require("../models/review");
 //<--------------Routes------------->
 
 // When submit review is clicked, then this route will trigger and create a review (logic part of creating a review)
-router.post("/", wrapAsync(async (req, res) => {
+router.post("/",isLoggedIn,wrapAsync(async (req, res) => {
     const { id } = req.params;
     const currListing = await Listing.findById(id); //get the particular listing
     const newReview = new Review(req.body.review); //make a new review
+    newReview.owner=req.user._id;
     currListing.reviews.push(newReview); //add review to that particular listing
     await newReview.save(); //Save a new review in the 'reviews' collection
     await currListing.save(); //Save the listing in 'listings' collection with new review (it wont make a new listing)
@@ -21,7 +22,7 @@ router.post("/", wrapAsync(async (req, res) => {
 }))
 
 //When delete button is clicked, this route will trigger and review will be deleted (logic part of deleting a review)
-router.delete("/:reviewId",wrapAsync(async (req,res)=>{
+router.delete("/:reviewId",isReviewOwner,isLoggedIn,wrapAsync(async (req,res)=>{
     const {id,reviewId}=req.params;
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
     await Review.findByIdAndDelete({_id:reviewId});
